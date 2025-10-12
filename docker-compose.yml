@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  # ------------------------------------------------------------
+  # Front‑end – the Flutter web app served by Caddy
+  # ------------------------------------------------------------
+  web:
+    build: .
+    container_name: ecochef_web
+    restart: unless-stopped
+    ports:
+      - "8080:80" # HTTP (Caddy will auto‑redirect to HTTPS)
+      - "8443:443" # HTTPS (use a real domain for automatic TLS)
+    environment:
+      # Caddy will obtain a cert for the domain defined in the Host header.
+      # When testing locally you can set:
+      #   - CADDY_TLS_INTERNAL_CA=on
+      #   - CADDY_TLS_INTERNAL_CA_CERT=...
+      API_URL: "http://api:8000"
+    depends_on:
+      - api # optional – comment out if you don’t run a backend locally
+
+  # ------------------------------------------------------------
+  # API – FastAPI (or any other backend) exposing GraphQL/REST
+  # ------------------------------------------------------------
+  api:
+    image: python:3.11-slim
+    container_name: ecochef_api
+    restart: unless-stopped
+    working_dir: /app
+    volumes:
+      - ./backend:/app # mount your backend source code
+    command: >
+      sh -c "
+        pip install --no-cache-dir -r requirements.txt &&
+        uvicorn main:app --host 0.0.0.0 --port 8000
+      "
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///./data.db # or your real DB URL
+      - OPENAI_API_KEY=${OPENAI_API_KEY} # <-- put your LLM key in .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  default:
+    name: ecochef_net

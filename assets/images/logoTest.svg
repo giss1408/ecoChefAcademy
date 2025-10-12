@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EcoChef Academy – simple, eco‑friendly, culinary logo -->
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 400 120"
+    width="400"
+    height="120">
+
+  <!-- ==== GREEN LEAF (symbol of sustainability) ==== -->
+  <path
+      d="M120 70
+         C115 55, 105 45, 95 45
+         C85 45, 75 55, 70 70
+         C65 85, 70 100, 80 105
+         C90 110, 110 110, 120 105
+         C130 100, 135 85, 130 70
+         Z"
+      fill="#4CAF50"
+      stroke="#388E3C"
+      stroke-width="2"/>
+
+  <!-- ==== CHEF HAT (top of the leaf) ==== -->
+  <rect x="78" y="20" width="44" height="30" rx="6" ry="6"
+        fill="#FFFFFF" stroke="#CCCCCC" stroke-width="2"/>
+  <path d="M78 20 L122 20 L140 5 L60 5 Z"
+        fill="#FFFFFF" stroke="#CCCCCC" stroke-width="2"/>
+
+  <!-- ==== TEXT: ECOCHEF ACADEMY ==== -->
+  <text x="170" y="68"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="48"
+        font-weight="bold"
+        fill="#212121">EcoChef</text>
+
+  <text x="170" y="108"
+        font-family="Helvetica, Arial, sans-serif"
+        font-size="28"
+        fill="#555555">Academy</text>
+</svg>

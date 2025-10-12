@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- ==== BASIC METADATA ==== -->
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1,shrink-to-fit=no">
+
+  <title>EcoChef Academy – Zero‑Waste Cooking</title>
+
+  <!-- ==== SEO ==== -->
+  <meta name="description"
+        content="Turn the food you already have into tasty, waste‑free meals. Scan your fridge, get AI‑generated recipes, watch micro‑learning videos and earn badges.">
+  <meta name="keywords"
+        content="food waste, zero waste, cooking, recipe generator, AI, micro learning, sustainability">
+
+  <!-- ==== SOCIAL SHARING ==== -->
+  <meta property="og:title" content="EcoChef Academy – Zero‑Waste Cooking">
+  <meta property="og:description"
+        content="Turn the food you already have into tasty, waste‑free meals. Scan your fridge, get AI‑generated recipes, watch micro‑learning videos and earn badges.">
+  <meta property="og:image" content="https://YOUR_DOMAIN/assets/images/hero.png">
+  <meta property="og:url" content="https://YOUR_DOMAIN/">
+  <meta property="og:type" content="website">
+
+  <!-- ==== TWITTER CARD ==== -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="EcoChef Academy – Zero‑Waste Cooking">
+  <meta name="twitter:description"
+        content="Turn the food you already have into tasty, waste‑free meals. Scan your fridge, get AI‑generated recipes, watch micro‑learning videos and earn badges.">
+  <meta name="twitter:image" content="https://YOUR_DOMAIN/assets/images/hero.png">
+
+  <!-- ==== FAVICON ==== -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- ==== FLUTTER WEB ==== -->
+  <script src="flutter.js" defer></script>
+  <script>
+    // Wait for the Flutter engine to load, then bootstrap the app.
+    window.addEventListener('load', function () {
+      if (window.flutterWebRenderer == null) {
+        // default renderer (can be changed to 'canvaskit' via query param)
+        window.flutterWebRenderer = 'html';
+      }
+      _flutter.loader.loadEntrypoint({
+        entrypointUrl: 'main.dart.js',
+        onEntrypointLoaded: function (engineInitializer) {
+          engineInitializer.initializeEngine().then(function (appRunner) {
+            appRunner.runApp();
+          });
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <!-- The Flutter canvas will replace this div -->
+  <div id="flutter-loading">
+    <p style="font-family:Arial,sans-serif;text-align:center;margin-top:2rem;">
+      Loading EcoChef Academy…
+    </p>
+  </div>
+</body>
+</html>
