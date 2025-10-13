@@ -8,14 +8,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_svg: ^2.0.9               # for SVG logo
-  graphql_flutter: ^5.1.0           # GraphQL client (works with REST too)
+  flutter_svg: ^2.0.9 # for SVG logo
+  graphql_flutter: ^5.1.0 # GraphQL client (works with REST too)
   http: ^1.2.0
   intl: ^0.18.0
   cupertino_icons: ^1.0.6
   file_picker: ^8.0.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  camera: ^0.10.5+5 # for camera functionality
+  path_provider: ^2.1.1 # for file paths
+  image: ^4.1.3 # for image processing
+  permission_handler: ^11.1.0 # for camera permissions
 
 dev_dependencies:
   flutter_test:

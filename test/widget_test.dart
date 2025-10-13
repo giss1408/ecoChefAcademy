@@ -1,30 +1,55 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// This is a basic Flutter widget test for EcoChef Academy.
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:eco_chef_academy/main.dart';
+import 'package:eco_chef_academy/services/mock_data_service.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  group('Mock Data Service Tests', () {
+    test('returns recipes when no ingredients specified', () {
+      final result = MockDataService.getRecipes(null);
+      expect(result['recipes'], isNotNull);
+      expect(result['recipes'], isA<List>());
+      expect(result['recipes'].length, greaterThan(0));
+    });
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    test('returns recipes filtered by ingredients', () {
+      final result = MockDataService.getRecipes(['tomato', 'cheese']);
+      expect(result['recipes'], isNotNull);
+      expect(result['recipes'], isA<List>());
+      // Should return recipes that contain tomato or cheese
+      final recipes = result['recipes'] as List;
+      expect(recipes.length, greaterThan(0));
+    });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+    test('returns badges', () {
+      final result = MockDataService.getBadges();
+      expect(result['badges'], isNotNull);
+      expect(result['badges'], isA<List>());
+      final badges = result['badges'] as List;
+      expect(badges.length, equals(6));
+      
+      // Check badge structure
+      final firstBadge = badges.first;
+      expect(firstBadge['id'], isNotNull);
+      expect(firstBadge['title'], isNotNull);
+      expect(firstBadge['description'], isNotNull);
+      expect(firstBadge['level'], isIn(['bronze', 'silver', 'gold']));
+    });
+  });
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+  group('Recipe Data Validation', () {
+    test('all recipes have required fields', () {
+      final result = MockDataService.getRecipes(null);
+      final recipes = result['recipes'] as List;
+      
+      for (final recipe in recipes) {
+        expect(recipe['id'], isNotNull);
+        expect(recipe['title'], isNotNull);
+        expect(recipe['imageUrl'], isNotNull);
+        expect(recipe['prepMinutes'], isA<int>());
+        expect(recipe['instructions'], isNotNull);
+        expect(recipe['ingredients'], isA<List>());
+      }
+    });
   });
 }

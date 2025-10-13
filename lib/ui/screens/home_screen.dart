@@ -52,7 +52,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _ActionButtons extends StatelessWidget {
-  const _ActionButtons({super.key});
+  const _ActionButtons();
 
   @override
   Widget build(BuildContext context) {
