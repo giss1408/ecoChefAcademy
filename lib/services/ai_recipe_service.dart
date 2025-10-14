@@ -8,14 +8,62 @@ class AIRecipeService {
   static const String _baseUrl = 'https://your-backend-api.com';
   static const String _apiKey = 'your-api-key'; // Store securely in production
   
+  // SPEED OPTIMIZED: Pre-computed recipe templates for instant generation
+  // This eliminates the need for dynamic recipe construction, reducing CPU usage
+  static const _recipeTemplates = {
+    'tomato': {
+      'id': 'ai_tomato_pasta',
+      'name': 'AI Fresh Tomato Pasta',
+      'title': 'AI Fresh Tomato Pasta',
+      'description': 'AI-Generated: Sauté garlic in olive oil, add fresh tomatoes and cook until soft. Toss with cooked pasta and fresh herbs. A perfect way to use those ripe tomatoes in your fridge!',
+      'imageUrl': 'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&h=300&fit=crop',
+      'prepMinutes': 20,
+      'cookTime': '20 min',
+      'difficulty': 'Easy',
+      'instructions': 'AI-Generated: Sauté garlic in olive oil, add fresh tomatoes and cook until soft. Toss with cooked pasta and fresh herbs. A perfect way to use those ripe tomatoes in your fridge!',
+      'aiGenerated': true,
+      'confidence': 0.95,
+      '__typename': 'Recipe',
+    },
+    'chicken': {
+      'id': 'ai_chicken_stir_fry',
+      'name': 'AI Smart Chicken Stir-Fry',
+      'title': 'AI Smart Chicken Stir-Fry',
+      'description': 'AI-Generated: Cut chicken into strips and stir-fry with your available vegetables. Season with soy sauce and garlic. This recipe maximizes the use of ingredients found in your fridge!',
+      'imageUrl': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop',
+      'prepMinutes': 15,
+      'cookTime': '15 min',
+      'difficulty': 'Medium',
+      'instructions': 'AI-Generated: Cut chicken into strips and stir-fry with your available vegetables. Season with soy sauce and garlic. This recipe maximizes the use of ingredients found in your fridge!',
+      'aiGenerated': true,
+      'confidence': 0.88,
+      '__typename': 'Recipe',
+    },
+    'egg': {
+      'id': 'ai_breakfast_scramble',
+      'name': 'AI Ultimate Breakfast Scramble',
+      'title': 'AI Ultimate Breakfast Scramble',
+      'description': 'AI-Generated: Perfect breakfast using your available ingredients. Scramble eggs with bacon, serve on toasted bread with fresh avocado. A nutritious start to your day!',
+      'imageUrl': 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=300&fit=crop',
+      'prepMinutes': 10,
+      'cookTime': '10 min',
+      'difficulty': 'Easy',
+      'instructions': 'AI-Generated: Cook bacon until crispy, scramble eggs in the same pan. Toast bread and serve with sliced avocado. The AI suggests this combination for maximum nutrition and taste!',
+      'aiGenerated': true,
+      'confidence': 0.92,
+      '__typename': 'Recipe',
+    },
+  };
+  
   /// Analyze fridge image and detect ingredients
   static Future<List<String>> analyzeImage(File imageFile) async {
     print('AIRecipeService: Analyzing image: ${imageFile.path}');
     
     try {
-      // Convert image to base64 for API request
-      final bytes = await imageFile.readAsBytes();
-      final base64Image = base64Encode(bytes);
+      // SPEED OPTIMIZED: Skip base64 encoding in mock mode for faster processing
+      // In production, this will be needed for API calls
+      // final bytes = await imageFile.readAsBytes();
+      // final base64Image = base64Encode(bytes);
       
       // For now, simulate the API call with mock data
       // In production, replace this with actual API call
@@ -87,11 +135,11 @@ class AIRecipeService {
   
   /// Simulate ingredient detection (remove in production)
   static Future<List<String>> _simulateIngredientDetection() async {
-    // Simulate processing time
-    await Future.delayed(const Duration(seconds: 2));
+    // SPEED OPTIMIZED: Reduce delay to 200ms for ultra-fast response
+    await Future.delayed(const Duration(milliseconds: 200));
     
-    // Return mock detected ingredients
-    final mockIngredients = [
+    // SPEED OPTIMIZED: Pre-computed ingredient combinations for faster access
+    const mockIngredients = [
       ['tomato', 'lettuce', 'cucumber', 'carrot'],
       ['chicken', 'broccoli', 'rice', 'onion'],
       ['pasta', 'cheese', 'spinach', 'garlic'],
@@ -99,71 +147,31 @@ class AIRecipeService {
       ['salmon', 'lemon', 'asparagus', 'potato'],
     ];
     
-    // Return a random selection
-    final random = DateTime.now().millisecond % mockIngredients.length;
+    // SPEED OPTIMIZED: Use bitwise operation for faster random selection
+    final random = DateTime.now().microsecondsSinceEpoch & (mockIngredients.length - 1);
     return mockIngredients[random];
   }
   
   /// Simulate AI recipe generation (remove in production)
   static Future<List<Map<String, dynamic>>> _simulateRecipeGeneration(List<String> ingredients) async {
-    // Simulate AI processing time
-    await Future.delayed(const Duration(seconds: 3));
+    // SPEED OPTIMIZED: Reduce AI processing time to 300ms for near-instant response
+    await Future.delayed(const Duration(milliseconds: 300));
     
-    // Generate mock AI recipes based on ingredients
+    // SPEED OPTIMIZED: Use dynamic list to avoid null entries and casting issues
     final recipes = <Map<String, dynamic>>[];
     
-    if (ingredients.contains('tomato')) {
-      recipes.add({
-        'id': 'ai_tomato_pasta',
-        'name': 'AI Fresh Tomato Pasta',
-        'title': 'AI Fresh Tomato Pasta',
-        'description': 'AI-Generated: Sauté garlic in olive oil, add fresh tomatoes and cook until soft. Toss with cooked pasta and fresh herbs. A perfect way to use those ripe tomatoes in your fridge!',
-        'imageUrl': 'https://images.unsplash.com/photo-1551892374-ecf8754cf8b0?w=400&h=300&fit=crop',
-        'prepMinutes': 20,
-        'cookTime': '20 min',
-        'difficulty': 'Easy',
-        'instructions': 'AI-Generated: Sauté garlic in olive oil, add fresh tomatoes and cook until soft. Toss with cooked pasta and fresh herbs. A perfect way to use those ripe tomatoes in your fridge!',
-        'ingredients': ingredients.take(4).toList(),
-        'aiGenerated': true,
-        'confidence': 0.95,
-        '__typename': 'Recipe',
-      });
-    }
-    
-    if (ingredients.contains('chicken')) {
-      recipes.add({
-        'id': 'ai_chicken_stir_fry',
-        'name': 'AI Smart Chicken Stir-Fry',
-        'title': 'AI Smart Chicken Stir-Fry',
-        'description': 'AI-Generated: Cut chicken into strips and stir-fry with your available vegetables. Season with soy sauce and garlic. This recipe maximizes the use of ingredients found in your fridge!',
-        'imageUrl': 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=400&h=300&fit=crop',
-        'prepMinutes': 15,
-        'cookTime': '15 min',
-        'difficulty': 'Medium',
-        'instructions': 'AI-Generated: Cut chicken into strips and stir-fry with your available vegetables. Season with soy sauce and garlic. This recipe maximizes the use of ingredients found in your fridge!',
-        'ingredients': ingredients.take(5).toList(),
-        'aiGenerated': true,
-        'confidence': 0.88,
-        '__typename': 'Recipe',
-      });
-    }
-
-    if (ingredients.contains('egg')) {
-      recipes.add({
-        'id': 'ai_breakfast_scramble',
-        'name': 'AI Ultimate Breakfast Scramble',
-        'title': 'AI Ultimate Breakfast Scramble',
-        'description': 'AI-Generated: Perfect breakfast using your available ingredients. Scramble eggs with bacon, serve on toasted bread with fresh avocado. A nutritious start to your day!',
-        'imageUrl': 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400&h=300&fit=crop',
-        'prepMinutes': 10,
-        'cookTime': '10 min',
-        'difficulty': 'Easy',
-        'instructions': 'AI-Generated: Cook bacon until crispy, scramble eggs in the same pan. Toast bread and serve with sliced avocado. The AI suggests this combination for maximum nutrition and taste!',
-        'ingredients': ingredients.take(4).toList(),
-        'aiGenerated': true,
-        'confidence': 0.92,
-        '__typename': 'Recipe',
-      });
+    // SPEED OPTIMIZED: Use pre-computed templates with direct assignment
+    for (final ingredient in ingredients) {
+      final template = _recipeTemplates[ingredient];
+      if (template != null) {
+        // Direct template usage with ingredient injection for maximum speed
+        recipes.add({
+          ...template,
+          'ingredients': ingredient == 'chicken' 
+              ? ingredients.take(5).toList() 
+              : ingredients.take(4).toList(),
+        });
+      }
     }
     
     // Always add a creative fusion recipe

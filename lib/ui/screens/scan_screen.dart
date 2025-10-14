@@ -4,6 +4,7 @@ import 'dart:io';
 import '../../services/ai_recipe_service.dart';
 import '../../services/camera_service.dart';
 import 'camera_capture_screen.dart';
+import 'recipe_detail_screen.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -102,7 +103,8 @@ class _ScanScreenState extends State<ScanScreen> {
       final recipes = await AIRecipeService.generateRecipes(ingredients);
       
       setState(() {
-        _suggestedRecipes = recipes;
+        // Filter out any null or invalid recipes for safety
+        _suggestedRecipes = recipes.where((recipe) => recipe != null && recipe is Map<String, dynamic>).toList();
         _isLoading = false;
       });
     } catch (e) {
@@ -281,6 +283,12 @@ class _ScanScreenState extends State<ScanScreen> {
                     itemCount: _suggestedRecipes.length,
                     itemBuilder: (context, index) {
                       final recipe = _suggestedRecipes[index];
+                      
+                      // Additional null safety check
+                      if (recipe == null || recipe is! Map<String, dynamic>) {
+                        return const SizedBox.shrink();
+                      }
+                      
                       return Card(
                         margin: const EdgeInsets.only(bottom: 8),
                         child: ListTile(
@@ -292,16 +300,16 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                           ),
                           title: Text(
-                            recipe['name'] ?? recipe['title'] ?? 'AI Recipe',
+                            recipe['name']?.toString() ?? recipe['title']?.toString() ?? 'AI Recipe',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(recipe['description'] ?? recipe['instructions'] ?? 'AI-generated recipe'),
+                              Text(recipe['description']?.toString() ?? recipe['instructions']?.toString() ?? 'AI-generated recipe'),
                               const SizedBox(height: 4),
                               Text(
-                                'Cook time: ${recipe['cookTime'] ?? 'Unknown'} • Difficulty: ${recipe['difficulty'] ?? 'Unknown'}',
+                                'Cook time: ${recipe['cookTime']?.toString() ?? 'Unknown'} • Difficulty: ${recipe['difficulty']?.toString() ?? 'Unknown'}',
                                 style: TextStyle(
                                   color: Colors.grey.shade600,
                                   fontSize: 12,
@@ -311,11 +319,10 @@ class _ScanScreenState extends State<ScanScreen> {
                           ),
                           trailing: const Icon(Icons.arrow_forward_ios),
                           onTap: () {
-                            // TODO: Navigate to recipe details
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Opening ${recipe['name'] ?? recipe['title'] ?? 'AI Recipe'}...'),
-                                backgroundColor: Colors.green,
+                            // Navigate to recipe details
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => RecipeDetailScreen(recipe: recipe),
                               ),
                             );
                           },
